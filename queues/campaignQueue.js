@@ -1,13 +1,18 @@
-const { Queue } = require("bullmq");
+require("dotenv").config();
 
-const campaignQueue = new Queue(
-  "campaignQueue",
-  {
-    connection: {
-      host: "localhost",
-      port: 6379,
-    },
-  }
-);
+const { Queue } =
+  require("bullmq");
 
-module.exports = campaignQueue;
+const campaignQueue =
+  new Queue(
+    "campaignQueue",
+    {
+      connection: {
+        url:
+          process.env.REDIS_URL,
+      },
+    }
+  );
+
+module.exports =
+  campaignQueue;

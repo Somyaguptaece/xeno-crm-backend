@@ -1,3 +1,4 @@
+require("dotenv").config();
 console.log(
   "WORKER FILE LOADED"
 );
@@ -46,7 +47,7 @@ console.log(
 );
 
 await axios.post(
-  "http://localhost:6000/channel/send",
+  `${process.env.CHANNEL_SERVICE_URL}/channel/send`,
   {
 
     logId:
@@ -107,10 +108,9 @@ await prisma.campaign.update({
     },
 
     {
-      connection: {
-        host: "localhost",
-        port: 6379,
-      },
+connection: {
+  url: process.env.REDIS_URL,
+},
     }
 
   );
