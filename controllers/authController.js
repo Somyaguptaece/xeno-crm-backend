@@ -116,19 +116,15 @@ res.status(201).json({
     "OTP generated successfully",
 
 });
-    } catch (error) {
+} catch (error) {
+
   console.log("REGISTER ERROR");
   console.log(error);
 
-  console.log("STATUS:");
-  console.log(error.response?.status);
+  return res.status(500).json({
+    message: error.message
+  });
 
-  console.log("DATA:");
-  console.log(error.response?.data);
-
-  toast.error(
-    error.response?.data?.message || "Register Failed"
-  );
 }
 
 };
