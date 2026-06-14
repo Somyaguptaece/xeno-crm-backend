@@ -1,3 +1,5 @@
+
+
 const axios = require("axios");
 
 
@@ -20,9 +22,12 @@ const {
 );
 
 
+
 const sendMessage =
   async (req, res) => {
-
+console.log(
+  JSON.stringify(req.body, null, 2)
+);
     const {
       logId,
       customerId,
