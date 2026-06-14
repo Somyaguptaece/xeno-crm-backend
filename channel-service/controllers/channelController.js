@@ -93,8 +93,8 @@ await sendEmail(
         try {
 
           // DELIVERED
-          await axios.post(
-            "http://localhost:5000/campaigns/receipt",
+await axios.post(
+  `${process.env.BACKEND_URL}/campaigns/receipt`,
             {
               logId,
               customerId,
