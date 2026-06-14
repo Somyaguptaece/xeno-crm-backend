@@ -7,73 +7,72 @@ const sendEmail = async (
   logId
 ) => {
 
-  await axios.post(
+  console.log(
+    "BREVO KEY FOUND:",
+    !!process.env.BREVO_API_KEY
+  );
 
-    "https://api.brevo.com/v3/smtp/email",
+  try {
 
-    {
+    const response =
+      await axios.post(
 
-      sender: {
-
-        name: "Xeno CRM",
-
-        email: "xenofde1@gmail.com"
-
-      },
-
-      to: [
+        "https://api.brevo.com/v3/smtp/email",
 
         {
-          email: to
+          sender: {
+            name: "Xeno CRM",
+            email: "xenofde1@gmail.com"
+          },
+
+          to: [
+            {
+              email: to
+            }
+          ],
+
+          subject,
+
+          htmlContent: `
+            <p>${message}</p>
+          `
+        },
+
+        {
+          headers: {
+
+            "api-key":
+              process.env.BREVO_API_KEY,
+
+            "Content-Type":
+              "application/json"
+
+          }
+
         }
 
-      ],
+      );
 
-      subject,
+    console.log(
+      "BREVO SUCCESS"
+    );
 
-      htmlContent: `
+    console.log(
+      response.data
+    );
 
-        <div>
+  } catch(error) {
 
-          <p>${message}</p>
+    console.log(
+      "BREVO ERROR"
+    );
 
-          <br/>
+    console.log(
+      error.response?.data
+    );
 
-          <a href="${process.env.BACKEND_URL}/tracking/click/${logId}">
-            View Offer
-          </a>
-
-          <img
-            src="${process.env.BACKEND_URL}/tracking/open/${logId}"
-            width="1"
-            height="1"
-          />
-
-        </div>
-
-      `
-
-    },
-
-    {
-
-      headers: {
-
-        "api-key":
-          process.env.BREVO_API_KEY,
-
-        "Content-Type":
-          "application/json"
-
-      }
-
-    }
-
-  );
-
-  console.log(
-    `Email Sent To ${to}`
-  );
+    throw error;
+  }
 
 };
 
