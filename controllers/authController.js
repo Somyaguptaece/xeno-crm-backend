@@ -117,14 +117,18 @@ res.status(201).json({
 
 });
     } catch (error) {
+  console.log("REGISTER ERROR");
+  console.log(error);
 
-  console.error("REGISTER ERROR:");
-  console.error(error);
+  console.log("STATUS:");
+  console.log(error.response?.status);
 
-  res.status(500).json({
-    message: error.message,
-  });
+  console.log("DATA:");
+  console.log(error.response?.data);
 
+  toast.error(
+    error.response?.data?.message || "Register Failed"
+  );
 }
 
 };
