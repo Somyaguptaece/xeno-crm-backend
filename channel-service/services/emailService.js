@@ -1,98 +1,82 @@
-const nodemailer =
-  require("nodemailer");
+const axios = require("axios");
 
-const transporter =
-  nodemailer.createTransport({
+const sendEmail = async (
+  to,
+  subject,
+  message,
+  logId
+) => {
 
-    host: "smtp-relay.brevo.com",
+  await axios.post(
 
-    port: 587,
+    "https://api.brevo.com/v3/smtp/email",
 
-    secure: false,
+    {
 
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+      sender: {
+
+        name: "Xeno CRM",
+
+        email: "xenofde1@gmail.com"
+
+      },
+
+      to: [
+
+        {
+          email: to
+        }
+
+      ],
+
+      subject,
+
+      htmlContent: `
+
+        <div>
+
+          <p>${message}</p>
+
+          <br/>
+
+          <a href="${process.env.BACKEND_URL}/tracking/click/${logId}">
+            View Offer
+          </a>
+
+          <img
+            src="${process.env.BACKEND_URL}/tracking/open/${logId}"
+            width="1"
+            height="1"
+          />
+
+        </div>
+
+      `
+
     },
 
-  });
+    {
 
-  transporter.verify(function (error, success) {
+      headers: {
 
-  if (error) {
+        "api-key":
+          process.env.BREVO_API_KEY,
 
-    console.log("SMTP ERROR:");
-    console.log(error);
+        "Content-Type":
+          "application/json"
 
-  } else {
+      }
 
-    console.log(
-      "SMTP SERVER READY"
-    );
+    }
 
-  }
+  );
 
-});
-const sendEmail =
-  async (
-    to,
-    subject,
-    message,
-    logId,
-  ) => {
-
-await transporter.sendMail({
-
-  from:
-    process.env.EMAIL_USER,
-
-  to,
-
-  subject,
-
-  html: `
-    <div>
-
-      <p>
-        ${message}
-      </p>
-
-<br/>
-
-<a
-href="${process.env.BACKEND_URL}/tracking/click/${logId}"
->
-style="
-background:#9333ea;
-padding:12px 20px;
-color:white;
-text-decoration:none;
-border-radius:8px;
-"
->
-View Offer
-</a>
-
-<img
-src="${process.env.BACKEND_URL}/tracking/open/${logId}"
-width="1"
-height="1"
-/>
-
-    </div>
-  `
-
-});
-
-    console.log(
-      `📧 Email Sent To ${to}`
-    );
+  console.log(
+    `Email Sent To ${to}`
+  );
 
 };
 
-console.log("EMAIL_USER:", process.env.EMAIL_USER);
-console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "FOUND" : "NOT FOUND");
-
 module.exports = {
-  sendEmail,
-};   
+  sendEmail
+};
