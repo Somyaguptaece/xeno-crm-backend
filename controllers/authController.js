@@ -18,16 +18,24 @@ const register =
 
     try {
 
+      console.log("===== REGISTER START =====");
+
       const {
         name,
         email,
         password,
       } = req.body;
 
-      const existingUser =
-        await prisma.user.findUnique({
-          where: { email },
-        });
+      console.log("Email:", email);
+
+      console.log("Checking existing user...");
+
+const existingUser =
+  await prisma.user.findUnique({
+    where: { email },
+  });
+
+console.log("Existing user:", existingUser);
 
       if (existingUser) {
 
@@ -43,7 +51,7 @@ const register =
           password,
           10
         );
-
+console.log("Creating user...");
       await prisma.user.create({
 
         data: {
@@ -54,13 +62,14 @@ const register =
         },
 
       });
+      console.log("User created successfully");
 
       const otp =
         Math.floor(
           100000 +
           Math.random() * 900000
         ).toString();
-
+console.log("Creating OTP...");
       await prisma.oTP.create({
 
         data: {
@@ -78,11 +87,13 @@ const register =
         },
 
       });
-
+      console.log("OTP created successfully");
+console.log("Sending email...");
       await sendOTPEmail(
         email,
         otp
       );
+      console.log("Email sent successfully");
 
       res.status(201).json({
 
@@ -93,12 +104,14 @@ const register =
 
     } catch (error) {
 
-      res.status(500).json({
-        message:
-          error.message,
-      });
+  console.error("REGISTER ERROR:");
+  console.error(error);
 
-    }
+  res.status(500).json({
+    message: error.message,
+  });
+
+}
 
 };
 

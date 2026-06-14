@@ -22,40 +22,43 @@ const sendOTPEmail =
     otp
   ) => {
 
-    await transporter.sendMail({
+    try {
 
-      from:
-        process.env.EMAIL_USER,
+      console.log("Sending email to:", email);
 
-      to: email,
+      const info =
+        await transporter.sendMail({
 
-      subject:
-        "Xeno CRM Verification OTP",
+          from:
+            process.env.EMAIL_USER,
 
-      html: `
-        <div style="font-family:Arial">
+          to: email,
 
-          <h2>
-            Welcome To Xeno CRM
-          </h2>
+          subject:
+            "Xeno CRM Verification OTP",
 
-          <p>
-            Your verification OTP is:
-          </p>
+          html: `
+            <div style="font-family:Arial">
+              <h2>Welcome To Xeno CRM</h2>
+              <p>Your verification OTP is:</p>
+              <h1>${otp}</h1>
+              <p>OTP valid for 10 minutes.</p>
+            </div>
+          `,
 
-          <h1>
-            ${otp}
-          </h1>
+        });
 
-          <p>
-            OTP valid for
-            10 minutes.
-          </p>
+      console.log("Email sent successfully");
+      console.log(info);
 
-        </div>
-      `,
+    } catch (error) {
 
-    });
+      console.log("EMAIL ERROR");
+      console.log(error);
+
+      throw error;
+
+    }
 
 };
 
