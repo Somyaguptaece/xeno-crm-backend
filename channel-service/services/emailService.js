@@ -11,8 +11,8 @@ const transporter =
     secure: false,
 
     auth: {
-      user: process.env.BREVO_USER,
-      pass: process.env.BREVO_PASS,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
 
   });
@@ -89,6 +89,9 @@ height="1"
     );
 
 };
+
+console.log("EMAIL_USER:", process.env.EMAIL_USER);
+console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "FOUND" : "NOT FOUND");
 
 module.exports = {
   sendEmail,
