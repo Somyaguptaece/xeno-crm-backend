@@ -166,28 +166,33 @@ console.log(
 
         });
 
-      await axios.post(
+console.log(
+  "BACKEND_URL:",
+  process.env.BACKEND_URL
+);
 
-        `http://localhost:5000/campaigns/${savedCampaign.id}/send`,
+await axios.post(
 
-        {
-          customerIds:
-            matchedCustomers.map(
-              customer =>
-                customer.id
-            ),
-        },
+  `${process.env.BACKEND_URL}/campaigns/${savedCampaign.id}/send`,
 
-        {
-          headers: {
+  {
+    customerIds:
+      matchedCustomers.map(
+        customer =>
+          customer.id
+      ),
+  },
 
-            Authorization:
-              req.headers.authorization,
+  {
+    headers: {
 
-          },
-        }
+      Authorization:
+        req.headers.authorization,
 
-      );
+    },
+  }
+
+);
 
       res.json({
 
