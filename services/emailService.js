@@ -4,62 +4,42 @@ const nodemailer =
 const transporter =
   nodemailer.createTransport({
 
-    service: "gmail",
+    host: "smtp.gmail.com",
+
+    port: 465,
+
+    secure: true,
 
     auth: {
-      user:
-        process.env.EMAIL_USER,
-
-      pass:
-        process.env.EMAIL_PASS,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
 
   });
 
-const sendOTPEmail =
-  async (
-    email,
-    otp
-  ) => {
+const sendOTPEmail = async (email, otp) => {
+  try {
 
-    try {
+    console.log("Sending OTP to:", email);
+    console.log("OTP:", otp);
 
-      console.log("Sending email to:", email);
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Xeno CRM Verification OTP",
+      html: `<h1>${otp}</h1>`
+    });
 
-      const info =
-        await transporter.sendMail({
+    console.log("EMAIL SENT");
+    console.log(info);
 
-          from:
-            process.env.EMAIL_USER,
+  } catch (error) {
 
-          to: email,
+    console.log("EMAIL ERROR");
+    console.log(error);
 
-          subject:
-            "Xeno CRM Verification OTP",
-
-          html: `
-            <div style="font-family:Arial">
-              <h2>Welcome To Xeno CRM</h2>
-              <p>Your verification OTP is:</p>
-              <h1>${otp}</h1>
-              <p>OTP valid for 10 minutes.</p>
-            </div>
-          `,
-
-        });
-
-      console.log("Email sent successfully");
-      console.log(info);
-
-    } catch (error) {
-
-      console.log("EMAIL ERROR");
-      console.log(error);
-
-      throw error;
-
-    }
-
+    throw error;
+  }
 };
 
 module.exports = {

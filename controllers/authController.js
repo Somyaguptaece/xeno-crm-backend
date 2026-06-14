@@ -87,21 +87,35 @@ console.log("Creating OTP...");
         },
 
       });
-      console.log("OTP created successfully");
+console.log("OTP created successfully");
+
 console.log("Sending email...");
-      await sendOTPEmail(
-        email,
-        otp
-      );
-      console.log("Email sent successfully");
 
-      res.status(201).json({
+try {
 
-        message:
-          "OTP sent to email",
+  await sendOTPEmail(
+    email,
+    otp
+  );
 
-      });
+  console.log(
+    "Email sent successfully"
+  );
 
+} catch (err) {
+
+  console.log(
+    "Email failed but user created"
+  );
+
+}
+
+res.status(201).json({
+
+  message:
+    "OTP generated successfully",
+
+});
     } catch (error) {
 
   console.error("REGISTER ERROR:");
