@@ -584,54 +584,53 @@ const generateCampaign =
 };
 
 const campaignReceipt =
-  async (req, res) => {
+async (req,res)=>{
 
-    try {
+  try{
 
-      console.log(
-        "RECEIPT HIT:",
-        req.body
-      );
+    const {
+      logId,
+      status
+    } = req.body;
 
-      const {
+    const log =
+      await prisma.communicationLog.update({
+
+        where:{
+          id:logId
+        },
+
+        data:{
+          status
+        }
+
+      });
+
+    global.io.emit(
+      "campaign-update",
+      {
         logId,
         status
-      } = req.body;
+      }
+    );
 
-      const updated =
-        await prisma.communicationLog.update({
+    console.log(
+      "SOCKET EMIT:",
+      status
+    );
 
-          where: {
-            id: logId
-          },
+    res.json({
+      success:true
+    });
 
-          data: {
-            status
-          }
+  }
+  catch(error){
 
-        });
+    res.status(500).json({
+      message:error.message
+    });
 
-      console.log(
-        "UPDATED:",
-        updated
-      );
-
-      res.status(200).json({
-        success: true
-      });
-
-    } catch (error) {
-
-      console.log(
-        "RECEIPT ERROR:",
-        error
-      );
-
-      res.status(500).json({
-        message: error.message
-      });
-
-    }
+  }
 
 };
 

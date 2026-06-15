@@ -29,10 +29,6 @@ router.post(
   campaignReceipt
 );
 
-router.get(
-  "/track/open/:logId",
-  trackOpen
-);
 
 router.use(
   authMiddleware

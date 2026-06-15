@@ -15,17 +15,25 @@ async (req,res)=>{
       `EMAIL OPENED -> ${logId}`
     );
 
-    await prisma.communicationLog.update({
+await prisma.communicationLog.update({
 
-      where:{
-        id:logId
-      },
+  where:{
+    id:logId
+  },
 
-      data:{
-        status:"OPENED"
-      }
+  data:{
+    status:"OPENED"
+  }
 
-    });
+});
+
+global.io.emit(
+  "campaign-update",
+  {
+    logId,
+    status:"OPENED"
+  }
+);
 
   }
   catch(error){
@@ -65,17 +73,25 @@ async (req,res)=>{
       `EMAIL CLICKED -> ${logId}`
     );
 
-    await prisma.communicationLog.update({
+  await prisma.communicationLog.update({
 
-      where:{
-        id:logId
-      },
+  where:{
+    id:logId
+  },
 
-      data:{
-        status:"CLICKED"
-      }
+  data:{
+    status:"CLICKED"
+  }
 
-    });
+});
+
+global.io.emit(
+  "campaign-update",
+  {
+    logId,
+    status:"CLICKED"
+  }
+);
 
   }
   catch(error){
