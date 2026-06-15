@@ -15,25 +15,42 @@ async (req,res)=>{
       `EMAIL OPENED -> ${logId}`
     );
 
-await prisma.communicationLog.update({
+const log =
+  await prisma.communicationLog.findUnique({
 
-  where:{
-    id:logId
-  },
+    where:{
+      id:logId
+    }
 
-  data:{
-    status:"OPENED"
-  }
+  });
 
-});
+if(
+  log &&
+  log.status !== "OPENED" &&
+  log.status !== "CLICKED"
+){
 
-global.io.emit(
-  "campaign-update",
-  {
-    logId,
-    status:"OPENED"
-  }
-);
+  await prisma.communicationLog.update({
+
+    where:{
+      id:logId
+    },
+
+    data:{
+      status:"OPENED"
+    }
+
+  });
+
+  global.io.emit(
+    "campaign-update",
+    {
+      logId,
+      status:"OPENED"
+    }
+  );
+
+}
 
   }
   catch(error){
