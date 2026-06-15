@@ -87,7 +87,7 @@ async (req,res)=>{
   }
 
 res.redirect(
-  "https://your-frontend.vercel.app/offers"
+  process.env.FRONTEND_URL
 );
 
 };

@@ -588,28 +588,44 @@ const campaignReceipt =
 
     try {
 
+      console.log(
+        "RECEIPT HIT:",
+        req.body
+      );
+
       const {
         logId,
         status
       } = req.body;
 
-      await prisma.communicationLog.update({
+      const updated =
+        await prisma.communicationLog.update({
 
-        where: {
-          id: logId
-        },
+          where: {
+            id: logId
+          },
 
-        data: {
-          status
-        }
+          data: {
+            status
+          }
 
-      });
+        });
+
+      console.log(
+        "UPDATED:",
+        updated
+      );
 
       res.status(200).json({
         success: true
       });
 
     } catch (error) {
+
+      console.log(
+        "RECEIPT ERROR:",
+        error
+      );
 
       res.status(500).json({
         message: error.message

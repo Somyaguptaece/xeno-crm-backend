@@ -40,11 +40,53 @@ const sendEmail = async (
 
         subject,
 
-        htmlContent: `
-          <div>
-            <p>${message}</p>
-          </div>
-        `
+htmlContent: `
+<div>
+
+  <p>
+    ${message}
+  </p>
+
+  <br/>
+
+  <a
+    href="${process.env.BACKEND_URL}/tracking/click/${logId}"
+    style="
+      background:#9333ea;
+      padding:12px 20px;
+      color:white;
+      text-decoration:none;
+      border-radius:8px;
+    "
+  >
+    View Offer
+  </a>
+
+  <img
+    src="${process.env.BACKEND_URL}/tracking/open/${logId}"
+    width="1"
+    height="1"
+  />
+
+</div>
+
+
+<br/>
+
+<a
+href="${process.env.BACKEND_URL}/tracking/click/${logId}"
+>
+View Offer
+</a>
+
+<img
+src="${process.env.BACKEND_URL}/tracking/open/${logId}"
+width="1"
+height="1"
+/>
+
+</div>
+`
 
       },
 
