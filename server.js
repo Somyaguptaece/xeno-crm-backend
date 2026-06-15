@@ -46,16 +46,30 @@ app.get("/", (req, res) => {
   res.send("CRM Backend Running");
 });
 
+const http = require("http");
+const { Server } = require("socket.io");
 
 const server =
   http.createServer(app);
 
 const io =
-  new Server(server,{
-    cors:{
-      origin:"*",
-      methods:["GET","POST"]
+  new Server(server, {
+
+    cors: {
+
+      origin: [
+        "https://xeno-crm-frontend-lovat.vercel.app"
+      ],
+
+      methods: [
+        "GET",
+        "POST"
+      ],
+
+      credentials: true
+
     }
+
   });
 
 global.io = io;
