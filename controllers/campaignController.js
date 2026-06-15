@@ -112,12 +112,7 @@ const delivered =
 const opened =
   logs.filter(
     log =>
-      [
-        "OPENED",
-        "CLICKED"
-      ].includes(
-        log.status
-      )
+      log.status === "OPENED"
   ).length;
 
 const clicked =
